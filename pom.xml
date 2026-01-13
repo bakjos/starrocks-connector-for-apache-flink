@@ -43,7 +43,7 @@ limitations under the License.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.starrocks</groupId>
     <artifactId>flink-connector-starrocks</artifactId>
-    <version>${srfc.version}_flink-${flink.minor.version}-SNAPSHOT</version>
+    <version>${srfc.version}_flink-${flink.minor.version}</version>
 
     <properties>
         <srfc.version>1.2.16</srfc.version>
@@ -53,13 +53,13 @@ limitations under the License.
         <file_encoding>UTF-8</file_encoding>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
-        <flink.minor.version>1.20</flink.minor.version>
-        <flink.version>1.20.0</flink.version>
-        <kafka.connector.version>3.4.0-1.20</kafka.connector.version>
+        <flink.minor.version>2.2</flink.minor.version>
+        <flink.version>2.2.0</flink.version>
+        <kafka.connector.version>4.0.0-2.0</kafka.connector.version>
         <arrow.version>5.0.0</arrow.version>
-        <kafka.version>2.8.1</kafka.version>
+        <kafka.version>3.9.1</kafka.version>
         <scala.binary.version>2.12</scala.binary.version>
-        <guava.version>32.0.1-jre</guava.version>
+        <guava.version>33.4.0-jre</guava.version>
         <shading.prefix>com.starrocks.shade</shading.prefix>
         <alibaba-fastjson.version>1.2.83</alibaba-fastjson.version>
         <jmockit.version>1.49</jmockit.version>
@@ -69,7 +69,7 @@ limitations under the License.
         <dependency>
             <groupId>com.starrocks</groupId>
             <artifactId>starrocks-stream-load-sdk</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1.2</version>
             <classifier>jar-with-dependencies</classifier>
         </dependency>
 
@@ -218,13 +218,6 @@ limitations under the License.
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>kafka</artifactId>
-            <version>1.18.3</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
             <version>1.18.3</version>
             <scope>test</scope>
         </dependency>
@@ -388,7 +381,6 @@ limitations under the License.
                     </filesets>
                 </configuration>
             </plugin>
-            
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
@@ -580,17 +572,6 @@ limitations under the License.
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.8.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>central</publishingServerId>
-                    <autoPublish>true</autoPublish>
-                    <waitUntil>published</waitUntil>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
                 <version>4.0.2</version>
@@ -678,6 +659,20 @@ limitations under the License.
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/commure/core-platform</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/commure/core-platform</url>
+        </snapshotRepository>
+
+    </distributionManagement>
     <reporting>
         <plugins>
             <plugin>

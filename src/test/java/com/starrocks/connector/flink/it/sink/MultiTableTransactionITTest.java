@@ -28,13 +28,15 @@ import com.starrocks.connector.flink.table.sink.v2.StarRocksSink;
 import com.starrocks.connector.flink.table.sink.v2.StarRocksSinkContext;
 import com.starrocks.data.load.stream.properties.StreamLoadTableProperties;
 import org.apache.flink.api.common.RuntimeExecutionMode;
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.configuration.CheckpointingOptions;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.configuration.RestartStrategyOptions;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
+import org.apache.flink.streaming.api.functions.sink.legacy.SinkFunction;
+import org.apache.flink.streaming.api.functions.source.legacy.RichParallelSourceFunction;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -1285,12 +1287,13 @@ public class MultiTableTransactionITTest extends StarRocksITTestBase {
     }
 
     private StreamExecutionEnvironment buildEnvWithCheckpointing(int parallelism, String checkpointDir) {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        Configuration config = new Configuration();
+        config.set(CheckpointingOptions.CHECKPOINTS_DIRECTORY, checkpointDir);
+        config.set(RestartStrategyOptions.RESTART_STRATEGY, "none");
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment(config);
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
         env.setParallelism(parallelism);
         env.enableCheckpointing(1000);
-        env.getCheckpointConfig().setCheckpointStorage(checkpointDir);
-        env.setRestartStrategy(RestartStrategies.noRestart());
         return env;
     }
 

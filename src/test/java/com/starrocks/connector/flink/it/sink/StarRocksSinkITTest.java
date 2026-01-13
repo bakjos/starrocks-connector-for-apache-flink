@@ -21,9 +21,9 @@ package com.starrocks.connector.flink.it.sink;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
+import org.apache.flink.configuration.CheckpointingOptions;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.ExecutionCheckpointingOptions;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.Table;
@@ -434,9 +434,9 @@ public class StarRocksSinkITTest extends StarRocksITTestBase {
         testConfigurationBase(options,
             env -> {
                 env.enableCheckpointing(1000);
-                env.getCheckpointConfig().setCheckpointStorage(checkpointDir);
                 Configuration config = new Configuration();
-                config.set(ExecutionCheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
+                config.set(CheckpointingOptions.CHECKPOINT_STORAGE, "file://" + checkpointDir );
+                config.set(CheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
                 env.configure(config);
                 return null;
             }
@@ -454,9 +454,9 @@ public class StarRocksSinkITTest extends StarRocksITTestBase {
         testConfigurationBase(options,
                 env -> {
                     env.enableCheckpointing(1000);
-                    env.getCheckpointConfig().setCheckpointStorage(checkpointDir);
                     Configuration config = new Configuration();
-                    config.set(ExecutionCheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
+                    config.set(CheckpointingOptions.CHECKPOINT_STORAGE, "file://" + checkpointDir );
+                    config.set(CheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
                     env.configure(config);
                     return null;
                 }
@@ -473,9 +473,9 @@ public class StarRocksSinkITTest extends StarRocksITTestBase {
         testConfigurationBase(options,
                 env -> {
                     env.enableCheckpointing(1000);
-                    env.getCheckpointConfig().setCheckpointStorage(checkpointDir);
                     Configuration config = new Configuration();
-                    config.set(ExecutionCheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
+                    config.set(CheckpointingOptions.CHECKPOINT_STORAGE, checkpointDir );
+                    config.set(CheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
                     env.configure(config);
                     return null;
                 }
@@ -493,9 +493,9 @@ public class StarRocksSinkITTest extends StarRocksITTestBase {
         testConfigurationBase(options,
                 env -> {
                     env.enableCheckpointing(1000);
-                    env.getCheckpointConfig().setCheckpointStorage(checkpointDir);
                     Configuration config = new Configuration();
-                    config.set(ExecutionCheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
+                    config.set(CheckpointingOptions.CHECKPOINT_STORAGE, checkpointDir );
+                    config.set(CheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
                     env.configure(config);
                     return null;
                 }
@@ -550,9 +550,10 @@ public class StarRocksSinkITTest extends StarRocksITTestBase {
         testConfigurationBase(options,
                 env -> {
                     env.enableCheckpointing(1000);
-                    env.getCheckpointConfig().setCheckpointStorage(checkpointDir);
                     Configuration config = new Configuration();
-                    config.set(ExecutionCheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
+                    config.set(CheckpointingOptions.CHECKPOINT_STORAGE, checkpointDir);
+                    config.set(CheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH, true);
+
                     env.configure(config);
                     return null;
                 }

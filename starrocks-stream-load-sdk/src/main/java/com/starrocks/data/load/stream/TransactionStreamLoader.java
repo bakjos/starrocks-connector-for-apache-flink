@@ -28,6 +28,7 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -104,7 +105,13 @@ public class TransactionStreamLoader extends DefaultStreamLoader {
         this.manager = manager;
         enableTransaction();
         initTxHeaders(properties);
+
+        SocketConfig socketConfig = SocketConfig.custom()
+                .setSoKeepAlive(true)
+                .build();
+
         clientBuilder = HttpClients.custom()
+                .setDefaultSocketConfig(socketConfig)
                 .setRedirectStrategy(new DefaultRedirectStrategy() {
                     @Override
                     protected boolean isRedirectable(String method) {

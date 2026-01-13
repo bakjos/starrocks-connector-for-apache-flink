@@ -18,7 +18,6 @@
 
 package com.starrocks.connector.flink.table.sink;
 
-import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.data.RowData;
 
 import com.starrocks.connector.flink.manager.StarRocksSinkTable;
@@ -29,6 +28,7 @@ import com.starrocks.connector.flink.table.sink.v2.RecordSerializationSchema;
 import com.starrocks.connector.flink.table.sink.v2.RowDataSerializationSchema;
 import com.starrocks.connector.flink.table.sink.v2.StarRocksSink;
 import com.starrocks.data.load.stream.properties.StreamLoadProperties;
+import org.apache.flink.table.legacy.api.TableSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -59,7 +59,7 @@ public class MergeCommitOptionsTest {
     @Test
     public void testPublishTimeoutCustomValueWhenMergeCommitEnabled() {
         Configuration options = new Configuration();
-        options.setInteger(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 30000);
+        options.set(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 30000);
 
         Map<String, String> streamLoadProperties = new HashMap<>();
         streamLoadProperties.put("enable_merge_commit", "true");
@@ -107,7 +107,7 @@ public class MergeCommitOptionsTest {
     @Test
     public void testPublishTimeoutZeroValueWhenMergeCommitEnabled() {
         Configuration options = new Configuration();
-        options.setInteger(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 0);
+        options.set(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 0);
 
         Map<String, String> streamLoadProperties = new HashMap<>();
         streamLoadProperties.put("enable_merge_commit", "true");
@@ -132,7 +132,7 @@ public class MergeCommitOptionsTest {
     @Test
     public void testPublishTimeoutNegativeValueOverridesDefault() {
         Configuration options = new Configuration();
-        options.setInteger(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, -1);
+        options.set(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, -1);
 
         Map<String, String> streamLoadProperties = new HashMap<>();
         streamLoadProperties.put("enable_merge_commit", "true");

@@ -108,12 +108,28 @@ public class StreamLoadResponse implements Serializable {
         private Long waitFinishTimeMs;
         private Long leftMergeTimeMs;
 
+        public Long getTxnId() {
+            return txnId;
+        }
+
         public Long getNumberTotalRows() {
             return numberTotalRows;
         }
 
         public Long getNumberLoadedRows() {
             return numberLoadedRows;
+        }
+
+        public Long getNumberUnselectedRows() {
+            return numberUnselectedRows;
+        }
+
+        public Long getLoadBytes() {
+            return loadBytes;
+        }
+
+        public Long getBeginTxnTimeMs() {
+            return beginTxnTimeMs;
         }
 
         public void setTxnId(Long txnId) {

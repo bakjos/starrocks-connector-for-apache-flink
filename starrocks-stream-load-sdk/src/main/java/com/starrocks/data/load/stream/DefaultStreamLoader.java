@@ -33,6 +33,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -99,7 +100,12 @@ public class DefaultStreamLoader implements StreamLoader, Serializable {
 
             initDefaultHeaders(properties);
 
+            SocketConfig socketConfig = SocketConfig.custom()
+                    .setSoKeepAlive(true)
+                    .build();
+
             this.clientBuilder  = HttpClients.custom()
+                    .setDefaultSocketConfig(socketConfig)
                     .setRequestExecutor(new HttpRequestExecutor(properties.getWaitForContinueTimeoutMs()))
                     .setRedirectStrategy(new DefaultRedirectStrategy() {
                         @Override

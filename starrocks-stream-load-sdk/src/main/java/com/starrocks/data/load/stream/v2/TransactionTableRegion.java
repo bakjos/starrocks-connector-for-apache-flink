@@ -86,6 +86,7 @@ public class TransactionTableRegion implements TableRegion {
 
     // First exception if retry many times
     private volatile Throwable firstException;
+    private volatile boolean retryPending = false;
 
     // Multi-table transaction mode flag
     private final boolean multiTableTransactionEnabled;
@@ -757,6 +758,11 @@ public class TransactionTableRegion implements TableRegion {
         return state.get() == State.FLUSHING;
     }
 
+    @Override
+    public boolean isRetryPending() {
+        return retryPending;
+    }
+
     public FlushReason shouldFlush() {
         if (state.get() != State.ACTIVE) {
             return FlushReason.NONE;
@@ -950,11 +956,13 @@ public class TransactionTableRegion implements TableRegion {
                 : retryIntervalInMs;
         LOG.warn("Failed to flush data for db: {}, table: {}, and will retry for {} times after {} ms",
                 database, table, numRetries, delayMs, e);
+        retryPending = true;
         streamLoad(delayMs);
     }
 
     @Override
     public void complete(StreamLoadResponse response) {
+        retryPending = false;
         Chunk chunk = inactiveChunks.remove();
         cacheBytes.addAndGet(-chunk.rowBytes());
         cacheRows.addAndGet(-chunk.numRows());

@@ -60,4 +60,46 @@ public class StreamLoadResponseTest {
         Assert.assertNotNull(responseBody.getStreamLoadPlanTimeMs());
     }
 
+    @Test
+    public void testMissingGetters() {
+        StreamLoadResponse.StreamLoadResponseBody body = new StreamLoadResponse.StreamLoadResponseBody();
+
+        body.setTxnId(12345L);
+        Assert.assertEquals(Long.valueOf(12345L), body.getTxnId());
+
+        body.setNumberUnselectedRows(7L);
+        Assert.assertEquals(Long.valueOf(7L), body.getNumberUnselectedRows());
+
+        body.setLoadBytes(98765L);
+        Assert.assertEquals(Long.valueOf(98765L), body.getLoadBytes());
+
+        body.setBeginTxnTimeMs(42L);
+        Assert.assertEquals(Long.valueOf(42L), body.getBeginTxnTimeMs());
+    }
+
+    @Test
+    public void testJacksonRoundTrip() throws Exception {
+        String entityContent = "{\n" +
+                "    \"TxnId\": 999,\n" +
+                "    \"NumberUnselectedRows\": 3,\n" +
+                "    \"LoadBytes\": 4096,\n" +
+                "    \"BeginTxnTimeMs\": 5\n" +
+                "}";
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        StreamLoadResponse.StreamLoadResponseBody body =
+                objectMapper.readValue(entityContent, StreamLoadResponse.StreamLoadResponseBody.class);
+
+        Assert.assertNotNull(body.getTxnId());
+        Assert.assertEquals(Long.valueOf(999L), body.getTxnId());
+        Assert.assertNotNull(body.getNumberUnselectedRows());
+        Assert.assertEquals(Long.valueOf(3L), body.getNumberUnselectedRows());
+        Assert.assertNotNull(body.getLoadBytes());
+        Assert.assertEquals(Long.valueOf(4096L), body.getLoadBytes());
+        Assert.assertNotNull(body.getBeginTxnTimeMs());
+        Assert.assertEquals(Long.valueOf(5L), body.getBeginTxnTimeMs());
+    }
+
 }

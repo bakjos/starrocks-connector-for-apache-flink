@@ -34,12 +34,12 @@ public class StarRocksSinkOptionsTest {
 
     private Configuration createBaseConfiguration() {
         Configuration conf = new Configuration();
-        conf.setString(StarRocksSinkOptions.TABLE_NAME, "test_table");
-        conf.setString(StarRocksSinkOptions.DATABASE_NAME, "test_db");
+        conf.set(StarRocksSinkOptions.TABLE_NAME, "test_table");
+        conf.set(StarRocksSinkOptions.DATABASE_NAME, "test_db");
         conf.setString(StarRocksSinkOptions.LOAD_URL.key(), "127.0.0.1:8030");
-        conf.setString(StarRocksSinkOptions.JDBC_URL, "jdbc:mysql://127.0.0.1:9030");
-        conf.setString(StarRocksSinkOptions.USERNAME, "root");
-        conf.setString(StarRocksSinkOptions.PASSWORD, "");
+        conf.set(StarRocksSinkOptions.JDBC_URL, "jdbc:mysql://127.0.0.1:9030");
+        conf.set(StarRocksSinkOptions.USERNAME, "root");
+        conf.set(StarRocksSinkOptions.PASSWORD, "");
         return conf;
     }
 
@@ -55,7 +55,7 @@ public class StarRocksSinkOptionsTest {
     @Test
     public void testPublishTimeoutMsCustomValue() {
         Configuration conf = createBaseConfiguration();
-        conf.setInteger(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 10000);
+        conf.set(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 10000);
         StarRocksSinkOptions sinkOptions = createSinkOptions(conf);
 
         assertEquals(10000, sinkOptions.getPublishTimeoutMs());
@@ -64,7 +64,7 @@ public class StarRocksSinkOptionsTest {
     @Test
     public void testPublishTimeoutMsZeroValue() {
         Configuration conf = createBaseConfiguration();
-        conf.setInteger(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 0);
+        conf.set(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 0);
         StarRocksSinkOptions sinkOptions = createSinkOptions(conf);
 
         assertEquals(0, sinkOptions.getPublishTimeoutMs());
@@ -73,7 +73,7 @@ public class StarRocksSinkOptionsTest {
     @Test
     public void testPublishTimeoutMsLargeValue() {
         Configuration conf = createBaseConfiguration();
-        conf.setInteger(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 300000);
+        conf.set(StarRocksSinkOptions.SINK_PUBLISH_TIMEOUT, 300000);
         StarRocksSinkOptions sinkOptions = createSinkOptions(conf);
 
         assertEquals(300000, sinkOptions.getPublishTimeoutMs());

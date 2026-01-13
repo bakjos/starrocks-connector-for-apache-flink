@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
@@ -38,9 +37,9 @@ import com.starrocks.connector.flink.table.sink.StarRocksSinkOptions;
 import com.starrocks.connector.flink.table.sink.StarRocksSinkSemantic;
 
 import org.apache.flink.table.api.DataTypes;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.api.TableSchema.Builder;
 
+import org.apache.flink.table.legacy.api.TableSchema;
+import org.apache.flink.table.legacy.api.TableSchema.Builder;
 import org.junit.After;
 import org.junit.Before;
 

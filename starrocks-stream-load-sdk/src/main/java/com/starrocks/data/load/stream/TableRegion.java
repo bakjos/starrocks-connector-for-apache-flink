@@ -68,6 +68,8 @@ public interface TableRegion {
     boolean isReadable();
     boolean isFlushing();
 
+    default boolean isRetryPending() { return false; }
+
     default HttpEntity getHttpEntity() {
         return new StreamLoadEntity(this, getProperties().getDataFormat(), getEntityMeta());
     }

@@ -19,6 +19,7 @@
 package com.starrocks.data.load.stream.v2;
 
 import com.starrocks.data.load.stream.DefaultStreamLoader;
+import com.starrocks.data.load.stream.exception.StreamLoadFailException;
 import com.starrocks.data.load.stream.EnvUtils;
 import com.starrocks.data.load.stream.LabelGenerator;
 import com.starrocks.data.load.stream.LabelGeneratorFactory;
@@ -1622,6 +1623,23 @@ public class DefaultStreamLoadManager implements StreamLoadManager, Serializable
     public void callback(Throwable e) {
         LOG.error("Stream load failed", e);
         this.e = e;
+        if (streamLoadListener != null) {
+            StreamLoadResponse response = new StreamLoadResponse();
+            Exception ex = (e instanceof Exception) ? (Exception) e : new RuntimeException(e);
+            response.setException(ex);
+            if (e instanceof StreamLoadFailException) {
+                StreamLoadResponse.StreamLoadResponseBody body =
+                        ((StreamLoadFailException) e).getResponseBody();
+                if (body != null) {
+                    response.setBody(body);
+                }
+            }
+            try {
+                streamLoadListener.onResponse(response);
+            } catch (Throwable t) {
+                LOG.warn("StreamLoadListener.onResponse threw on failure callback", t);
+            }
+        }
     }
 
     public Throwable getException() {
@@ -1782,7 +1800,12 @@ public class DefaultStreamLoadManager implements StreamLoadManager, Serializable
         if (e != null) {
             return true;
         }
-        return currentCacheBytes.get() == 0L && (!enableAutoCommit || allRegionsCommitted);
+        for (TableRegion r : regions.values()) {
+            if (r.isRetryPending()) {
+                return false;
+            }
+        }
+        return currentCacheBytes.compareAndSet(0L, 0L) && (!enableAutoCommit || allRegionsCommitted);
     }
 
     private void checkAndThrowException() {
