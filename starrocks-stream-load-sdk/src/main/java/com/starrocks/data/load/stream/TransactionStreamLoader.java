@@ -159,6 +159,7 @@ public class TransactionStreamLoader extends DefaultStreamLoader {
         }
 
         httpPost.setConfig(RequestConfig.custom()
+                        .setConnectTimeout(properties.getConnectTimeout())
                         .setSocketTimeout(properties.getSocketTimeout())
                         .setExpectContinueEnabled(true)
                         .setRedirectsEnabled(true)
@@ -217,6 +218,7 @@ public class TransactionStreamLoader extends DefaultStreamLoader {
         }
 
         httpPost.setConfig(RequestConfig.custom()
+                        .setConnectTimeout(properties.getConnectTimeout())
                         .setSocketTimeout(properties.getSocketTimeout())
                         .setExpectContinueEnabled(true)
                         .setRedirectsEnabled(true)
@@ -296,6 +298,7 @@ public class TransactionStreamLoader extends DefaultStreamLoader {
         }
 
         httpPost.setConfig(RequestConfig.custom()
+                        .setConnectTimeout(properties.getConnectTimeout())
                         .setSocketTimeout(properties.getSocketTimeout())
                         .setExpectContinueEnabled(true)
                         .setRedirectsEnabled(true)
@@ -373,6 +376,10 @@ public class TransactionStreamLoader extends DefaultStreamLoader {
         } else {
             httpPost.addHeader("table", transaction.getTable());
         }
+
+        httpPost.setConfig(RequestConfig.custom()
+                        .setConnectTimeout(properties.getConnectTimeout())
+                        .build());
 
         try (CloseableHttpClient client = clientBuilder.build()) {
             String responseBody;
